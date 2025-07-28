@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>my site</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav>
+      <a class="btn-primary" href="/">Home</a>
+      <a class="btn-primary" href="/challenges">Challenges</a>  
+        <a class="btn-primary" href="/challenges/new">Create Challenge</a>
+
+  <% if (user) { %>
+    <a class="btn-primary" href="/user/profile"> Profile</a>
+    <a class="btn-secondary" href="/auth/logout">Logout</a>
+  <% } else { %>
+    <a  class="btn-secondary" href="/auth/login">Login</a>
+    <a class="btn-secondary" href="/auth/register">Register</a>
+  <% } %>
+</nav>
+<hr>
+  <div class="container">
+
+    <%- body %>
+
+    <footer>
+  <hr>
+  <div class="footer-content">
+    <p>&copy; <%= new Date().getFullYear() %> OSINT Hub. Made with ❤️ by Anika.</p>
+  </div>
+</footer>
+</body>
+</html>

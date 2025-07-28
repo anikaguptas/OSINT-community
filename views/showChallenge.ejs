@@ -1,0 +1,72 @@
+<% layout("layouts/boilerplate") %>
+
+<body>
+    <hr>
+    <h1><%= challenge.title %></h1>
+    <p><%= challenge.description %></p>
+    <div>
+        <% for (let img of challenge.images) { %>
+          <img src="<%= img %>" alt="challenge image" width="300">
+        <% } %>
+    </div>
+    <p>Created At: <%= challenge.createdAt.toDateString() %></p>
+    <p>Created by: <%= challenge.author.name %></p>
+    <% if ( user && challenge.author._id.equals(user.id) ) {%>
+    <div> 
+ <a href="/challenges/<%= challenge._id %>/edit"> Edit Challenge</a>
+    <a href="/challenges">Back to Challenges</a>
+    <form method="POST" action="/challenges/<%= challenge._id %>?_method=DELETE">
+        <button type="submit">Delete Challenge</button>
+    </form>
+        <% }%>
+
+    </div>
+   
+
+    <hr>
+    <h2>ALL solns</h2>
+    <hr>
+
+    <% if (challenge.solutions.length === 0) { %>
+        <p>No solutions yet.</p>
+        <% } else { %>
+        <ul>
+            <% for (let solution of challenge.solutions) { %>
+                <li>
+                    <p><strong>Posted by:</strong> <%= solution.author.name %></p>
+                    <% if( user && solution.author._id.equals(user.id)) { %>
+                        <a class="btn-secondary" href="/solution/<%= solution._id %>/edit">Edit your solution</a>
+                                            <% } %>
+
+                        
+                    <p><%= solution.content %></p>
+                    <% if (solution.images && solution.images.length > 0) { %>
+                        <div>
+                            <% for (let photo of solution.images) { %>
+                                <img src="<%= photo %>" alt="solution image" width="300">
+                            <% } %>
+                        </div>
+                    <% } %>
+                </li>
+            <% } %>
+        </ul>
+    <% } %>
+    <hr>
+    <h2>Post your own solution</h2>
+        <hr>
+
+    <form enctype="multipart/form-data" method="POST" action="/challenges/<%=challenge._id %>/newsol ">
+        <textarea name="soln[content]" placeholder="Describe"></textarea>
+        <div>
+ <label>Photos(optional):</label>
+ <input
+        type="file"
+        id="images"
+        name="soln[images]"
+        multiple
+        accept="image/*"
+      />
+  </div>
+  <button type="submit" class="btn-primary"> Post Solution</button>
+    </form>
+</body>

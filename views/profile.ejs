@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+  <h1>Your Profile</h1>
+
+  <!-- 🔹 PART 1: USER DETAILS -->
+  <section>
+    <h2>User Info</h2>
+    <div class="avatar-container">
+  <img src="<%= userdetails.avatar %>" alt="Avatar" class="avatar-img">
+</div>
+    <p><strong>Name:</strong> <%= userdetails.name %></p>
+    <p><strong>Email:</strong> <%= userdetails.email %></p>
+    <p><strong>Username:</strong> <%= userdetails.username %></p>
+  </section>
+
+  <hr>
+
+  <!-- 🔹 PART 2: POSTED CHALLENGES -->
+  <section>
+    <h2>Your Challenges</h2>
+    <% if (userdetails.challenges.length === 0) { %>
+      <p>You haven’t posted any challenges yet.</p>
+    <% } else { %>
+      <ul>
+        <% userdetails.challenges.forEach(challenge => { %>
+          <li>
+            <h3><%= challenge.title %></h3>
+            <p><%= challenge.description %></p>
+            <a class="btn-secondary" href="/challenges/<%= challenge._id %>">View Challenge</a>
+          </li>
+          <hr>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+
+  <hr>
+
+  <!-- 🔹 PART 3: POSTED SOLUTIONS -->
+<section>
+  <h2>Your Solutions</h2>
+  <% if (solutions.length === 0) { %>
+    <p>You haven’t submitted any solutions yet.</p>
+  <% } else { %>
+    <ul>
+      <% for (let soln of solutions) { %>
+        <li>
+          <h3><%= soln.challenge.title %></h3>
+          <p><%= soln.content %></p>
+          <a class="btn-secondary" href="/solution/<%= soln._id %>/edit"> Edit Solution</a>
+        </li>
+      <% } %>
+    </ul>
+  <% } %>
+</section>
+
+</body>

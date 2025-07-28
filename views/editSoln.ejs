@@ -1,0 +1,32 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+  <h1>Edit Solution</h1>
+  <form action="/solution/<%= solution._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <label>Content</label>
+    <input type="text" name="newContent" value="<%= solution.content %>" required>
+    <br>
+
+    <h3>Current Images:</h3>
+    <% if (solution.images && solution.images.length > 0) { %>
+      <% for (let image of solution.images) { %>
+        <div style="margin-bottom: 10px;">
+          <img src="<%= image %>" width="200" alt="image" />
+          <label>
+            <input type="checkbox" name="RemovedImages" value="<%= image %>"> Remove
+          </label>
+        </div>
+      <% } %>
+    <% } else { %>
+      <p>No images uploaded yet.</p>
+    <% } %>
+
+    <br>
+
+    <label>Add More Images:</label>
+    <input type="file" name="newImages" multiple accept="image/*">
+    <br><br>
+    <button type="submit">Update Solution</button>
+  </form>
+  <br>
+</body>

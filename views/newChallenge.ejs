@@ -1,0 +1,46 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+  <h1>Create a New Challenge</h1>
+  <p>Fill out the form below to create a new challenge.</p>
+  <form action="/challenges/new" method="POST" enctype="multipart/form-data">
+    <div>
+      <label>Title:</label>
+      <input type="text" id="title" name="challenge[title]" required />
+      <br />
+      <br />
+      <label>Description:</label>
+
+      <br />
+
+      <textarea
+        id="description"
+        name="challenge[description]"
+        required
+      ></textarea>
+
+      <br />
+      <br />
+      <label>Images:</label>
+      <input
+        type="file"
+        id="images"
+        name="challenge[images]"
+        multiple
+        accept="image/*"
+      />
+      <br />
+      <br />
+      <label>Hints:</label>
+      <input
+        type="text"
+        id="hints"
+        name="challenge[hints]"
+        placeholder="Enter hints separated by commas"
+      />
+      <br />
+      <br />
+      <button type="submit">Create Challenge</button>
+    </div>
+  </form>
+</body>

@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+
+<h2>Login</h2>
+<form action="/auth/login" method="POST">
+  <div>
+ <input type="email" name="email" placeholder="email" required /><br> <br>
+  <input type="password" name="password" placeholder="Password" required /><br> <br>
+  <button class="btn-primary" type="submit">Login</button>
+  </div>
+ 
+</form>
+
+<p>OR</p>
+<a class="btn-secondary" href="/auth/google">Login with Google</a>

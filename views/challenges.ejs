@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+   <% if (!allChallenges || allChallenges.length === 0) { %>
+    <p>No challenges posted.</p>
+<% } else { %>
+
+
+    <ul>
+  <%  for (let challenge of allChallenges) { %>
+    <li>
+      <h2><%= challenge.title %></h2>
+      <p><%= challenge.description %></p>
+      <div>
+        <% for (let img of challenge.images) { %>
+          <img src="<%= img %>" alt="challenge image" width="300">
+        <% } %>
+      </div>
+      <p>Created At: <%= challenge.createdAt.toDateString() %></p>
+      <p>Created by: <%= challenge.author.name %></p>
+        <a  class="btn-secondary"  href="/challenges/<%=challenge._id%>">View Challenge</a>
+    </li>
+    <hr>
+      <%  } %>
+
+</ul>
+      <%  } %>
+
+</body>

@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+    <h1>Edit Challenge</h1>
+    <form action="/challenges/<%= challenge._id %>/?_method=PUT" method="POST" enctype="multipart/form-data">
+        <label>Title:</label>
+        <input type="text" name="challenge[title]" value="<%= challenge.title %>" required>
+        <br>
+
+        <label>Description:</label>
+        <textarea name="challenge[description]" required><%= challenge.description %></textarea>
+        <br>
+
+        <label>Hints (comma separated):</label>
+        <input type="text" name="challenge[hints]" value="<%= challenge.hints.join(', ') %>">
+        <br>
+
+       <h3>Current Images:</h3>
+<% if (challenge.images && challenge.images.length > 0) { %>
+  <% challenge.images.forEach((img, idx) => { %>
+    <div style="margin-bottom: 10px;">
+      <img src="<%= img %>" width="200" alt="image" />
+      <label>
+        <input type="checkbox" name="removeImages" value="<%= img %>"> Remove
+      </label>
+    </div>
+  <% }) %>
+<% } else { %>
+  <p>No images uploaded yet.</p>
+<% } %>
+
+        <br>
+
+        <label>Add More Images:</label>
+        <input type="file" name="challenge[images]" multiple accept="image/*">
+        <br><br>
+
+        <button type="submit">Update Challenge</button>
+    </form>
+    <br>
+    <a href="/challenges/<%= challenge._id %>">Back to Challenge</a>
+</body>
+
