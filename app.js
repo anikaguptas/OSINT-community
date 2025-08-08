@@ -7,6 +7,7 @@ const Challenge = require('./models/Challenge'); // Import the Challenge model
 const { connectDB, fillDatabase } = require('./config/db');
 const cookieParser = require('cookie-parser');
 const { checkAuth } = require('./middleware/authMiddleware'); // ✅ Fix here
+const {setUserToLocals} = require('./middleware/authMiddleware'); // Import setUserToLocal
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./expressError'); // Import the ExpressError class
 dotenv.config();
@@ -23,15 +24,13 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(express.json());                         // (Optional) for JSON payloads
-
-
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 
 app.use(passport.initialize());
-app.use(checkAuth); // ✅ Now this is a proper middleware function
+app.use(setUserToLocals); // ✅ Now this is a proper middleware function
 
 app.get('/', (req, res) => {
   res.render('home');

@@ -19,6 +19,7 @@
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.2",
     "hackcss-ext": "^1.0.0",
     "joi": "^17.13.3",

@@ -1,11 +1,8 @@
 // middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-const { Types } = require('mongoose');
-const { rawListeners } = require('../models/Solution');
-const checkAuth = (req, res, next) => {
-  const token = req.cookies.token;
 
+const setUserToLocals = (req, res, next) => {
+  const token = req.cookies.token;
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -19,7 +16,45 @@ const checkAuth = (req, res, next) => {
     req.user = null;
     res.locals.user = null;
   }
+  next();
+};
 
+const isAuthenticated = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    req.user = null;
+    res.locals.user = null;
+    return res.redirect('/login');
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    res.locals.user = decoded;
+    next(); // Proceed to the next middleware/route
+  } catch (err) {
+    req.user = null;
+    res.locals.user = null;
+    return res.redirect('/login');
+  }
+};
+
+
+const checkAuth = (req, res, next) => {
+  const token = req.cookies.token;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      res.locals.user = decoded;
+    } catch (err) {
+      req.user = null;
+      res.locals.user = null;
+    }
+  } else {
+    req.user = null;
+    res.locals.user = null;
+  }
   next();
 };
 
@@ -31,6 +66,7 @@ const redirectIfAuthenticated = (req, res, next) => {
 };
 
 module.exports = {
+  setUserToLocals,
   checkAuth,
   redirectIfAuthenticated
 };

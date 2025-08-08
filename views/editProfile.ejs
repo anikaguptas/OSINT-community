@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+    <h1>Edit Profile</h1>
+    <form action="/user/profile/<%= userdetails._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <label>Name</label>
+        <input type="text" name="newDetails[name]" value="<%= userdetails.name %>" required>
+        <br>
+  <label>Email</label>
+        <input type="email" name="newDetails[email]" value="<%= userdetails.email %>" required>
+        <br>
+
+        <label>Username</label>
+        <input type="text" name="newDetails[username]" value="<%= userdetails.username %>" required>
+        <br>
+
+        <label>Avatar</label>
+        <input type="file" name="newDetails[avatar]" accept="image/*">
+        <br><br>
+
+        <button type="submit">Update Profile</button>
+
+    <a href="/user/profile">Back to Challenge</a>
+       </form>
+</body>
+
+      
+ 
+

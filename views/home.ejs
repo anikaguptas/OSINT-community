@@ -1,5 +1,21 @@
 <% layout('layouts/boilerplate') %>
 
-<h1>Welcome to OSINT Platform</h1>
-<p>This is the homepage. Choose to log in or sign up to continue.</p>
-<a class="btn-secondary" href="/challenges">Show challenges</a>
+<div class="home-container">
+  <h1 class="home-title">Welcome</h1>
+    <% if (user) { %>
+        <h1 class="home-title">Welcome <%= user.name %></h1>
+
+    <% } %>
+  <p class="home-subtitle">
+    Your gateway to mastering open source intelligence.<br>
+  </p>
+
+  <div class="home-buttons">
+    <% if (!user) { %>
+      <a class="btn-primary" href="/auth/login"> Login</a>
+      <a class="btn-secondary" href="/auth/register"> Register</a>
+    <% } %>
+    
+    <a class="btn-secondary" href="/challenges">💡 Show Challenges</a>
+  </div>
+</div>

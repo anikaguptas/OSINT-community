@@ -144,5 +144,4 @@ challenge.solutions = [...challenge.solutions, solution._id];
     console.log("everything is saved");
     res.redirect(`/challenges/${challengeId}`);
 }))
-
 module.exports = router;

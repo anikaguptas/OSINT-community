@@ -146,3 +146,28 @@ footer {
   height: 100%;
   object-fit: cover;
 }
+.home-container {
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.home-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.home-subtitle {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: #cccccc;
+}
+
+.home-buttons {
+  margin-top: 2rem;
+}
+
+.home-buttons a {
+  margin: 0 10px;
+}
