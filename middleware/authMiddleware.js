@@ -1,6 +1,7 @@
 // middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-
+const Challenge = require('../models/Challenge');
+const ExpressError = require('../expressError');
 const setUserToLocals = (req, res, next) => {
   const token = req.cookies.token;
   if (token) {
@@ -21,12 +22,7 @@ const setUserToLocals = (req, res, next) => {
 
 const isAuthenticated = (req, res, next) => {
   const token = req.cookies.token;
-
-  if (!token) {
-    req.user = null;
-    res.locals.user = null;
-    return res.redirect('/login');
-  }
+  if (!token)  return res.redirect('/auth/login');
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
@@ -35,7 +31,7 @@ const isAuthenticated = (req, res, next) => {
   } catch (err) {
     req.user = null;
     res.locals.user = null;
-    return res.redirect('/login');
+    return res.redirect('/auth/login');
   }
 };
 
@@ -65,8 +61,29 @@ const redirectIfAuthenticated = (req, res, next) => {
   next();
 };
 
+
+const isChallengeOwner = async (req, res, next) => {
+  const { id } = req.params;
+  if (!req.user) {
+    return res.redirect('/auth/login');
+  }
+  const challenge = await Challenge.findById(id);
+  if (!challenge) {
+    throw new ExpressError(404, "Challenge not found");
+  }
+
+  if (challenge.author.toString() !== req.user.id) {
+    throw new ExpressError(404, "You are not the owner of the challenge");
+  }
+  next();
+};
+
+
+
 module.exports = {
   setUserToLocals,
   checkAuth,
-  redirectIfAuthenticated
+  redirectIfAuthenticated,
+  isAuthenticated,
+  isChallengeOwner
 };
