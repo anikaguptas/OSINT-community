@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('../config/passport');
 const ExpressError = require('../expressError');
-
 // Function to render the login form
 const renderLoginForm = (req, res) => {
   res.render('login');

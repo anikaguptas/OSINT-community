@@ -2,7 +2,8 @@ const Challenge = require('../models/Challenge');
 const User = require('../models/User');
 const {cloudinary} = require('../config/cloudinary');
 const ExpressError = require('../expressError');
-const Solution = require('../models/Solution')
+const Solution = require('../models/Solution');
+const { post } = require('../routes/challenges');
 function extractPublicId(url) {
     const withoutParams = url.split('/upload/')[1];
     return withoutParams.substring(0, withoutParams.lastIndexOf('.'));
@@ -158,6 +159,33 @@ const deleteChallenge = async (req, res) => {
   }
 };
 
+const postSolution =  async(req,res)=>{
+    if(!req.user) throw new ExpressError(400, "Please Login to post a solution")
+    const challengeId = req.params.challengeId;
+    console.log("challenge id " + typeof(challengeId)); // Should be a string
+    const author = req.user.id;
+    console.log("author id " + typeof(author)); // Should be a string
+    const {soln} = req.body;
+    const solution = new Solution({
+        content : soln.content,
+        author : author,
+        challenge : challengeId,
+    images: req.files ? req.files.map(f => f.path) : []
+  });
+    await solution.save();
+    console.log("solution saved");
+    const challenge = await Challenge.findById(challengeId);
+    console.log("challenge found" + challenge);
+challenge.solutions = [...challenge.solutions, solution._id];
+    await challenge.save();
+    console.log("challenge updated with solution");
+    const user = await User.findById(author);
+    user.solutions.push(solution._id);
+    await user.save();
+    console.log("everything is saved");
+    res.redirect(`/challenges/${challengeId}`);
+};
+
 module.exports={
     rendernewChallengeForm, 
     showChallenges,
@@ -165,5 +193,6 @@ module.exports={
     renderEditChallengeForm,
     showSingleChallenge,
     updateChallengePUT,
-    deleteChallenge
+    deleteChallenge,
+    postSolution
  }

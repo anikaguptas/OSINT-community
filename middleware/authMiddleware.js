@@ -2,6 +2,8 @@
 const jwt = require('jsonwebtoken');
 const Challenge = require('../models/Challenge');
 const ExpressError = require('../expressError');
+const Solution = require('../models/Solution');
+
 const setUserToLocals = (req, res, next) => {
   const token = req.cookies.token;
   if (token) {
@@ -22,6 +24,7 @@ const setUserToLocals = (req, res, next) => {
 
 const isAuthenticated = (req, res, next) => {
   const token = req.cookies.token;
+  console.log("Token is", token);
   if (!token)  return res.redirect('/auth/login');
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -78,9 +81,22 @@ const isChallengeOwner = async (req, res, next) => {
   next();
 };
 
+const isSolutionOwner = async (req, res, next) => {
+   const solnId = req.params.solnId;
+    const solution = await Solution.findById(solnId);
+
+    if (!solution) throw new ExpressError(404, "Solution not found");
+
+    if (!req.user || solution.author.toString() !== req.user.id) {
+        throw new ExpressError(403, "You are not allowed to modify this solution");
+    }
+    next();
+}
+
 
 
 module.exports = {
+  isSolutionOwner,
   setUserToLocals,
   checkAuth,
   redirectIfAuthenticated,
